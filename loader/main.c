@@ -1683,7 +1683,7 @@ void *CallObjectMethodV(void *env, void *obj, int methodID, uintptr_t *args) {
 	int lang = -1;
 	switch (methodID) {
 	default:
-		return 0x34343434;
+		return (void *)(uintptr_t)0x34343434;
 	}
 }
 
@@ -2120,7 +2120,7 @@ void *pthread_main(void *arg) {
 		int gl_prog;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &gl_prog);
 		setup_2d_draw_rotated(bg_attributes, 0.0f, 0.0f, SCREEN_W, SCREEN_H);
-		vglDrawObjects(GL_TRIANGLE_STRIP, 4, GL_TRUE);
+		vglDrawObjects(GL_TRIANGLE_STRIP, 4);
 		glUseProgram(gl_prog);
 		vglSwapBuffers(GL_FALSE);
 	}
@@ -2132,11 +2132,11 @@ int get_urandom(int *this) {
 	FILE *f = fopen("ux0:data/urandom.txt", "w");
 	for (int i = 0; i < 1024; i++) {
 		uint32_t r = rand();
-		fwrite(f, 1, 4, &r);
+		fwrite(f, 1, 4, (FILE *)&r);
 	}
 	fclose(f);
 	*this = open("ux0:data/urandom.txt", O_RDONLY, 0777);
-	return this;
+	return (intptr_t)this;
 }
 
 int main(int argc, char *argv[]) {
